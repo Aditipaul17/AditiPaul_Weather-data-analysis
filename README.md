@@ -1,6 +1,8 @@
 # Weather Data Analysis Using PySpark – Analytics Dashboard
 React + Vite + Tailwind CSS + Recharts + Lucide.
 
+**Live Demo:** [https://aditipaul17.github.io/AditiPaul_Weather-data-analysis/](https://aditipaul17.github.io/AditiPaul_Weather-data-analysis/)
+
 ## Run
     npm install
     npm run dev          # open http://localhost:5173
