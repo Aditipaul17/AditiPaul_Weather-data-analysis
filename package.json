@@ -1,1 +1,31 @@
-{"name":"weather-analytics-dashboard","private":true,"version":"1.0.0","type":"module","scripts":{"dev":"vite","build":"vite build","preview":"vite preview","predeploy":"npm run build","deploy":"gh-pages -d dist","data":"python scripts/generate_data.py weatherHistory.csv"},"dependencies":{"lucide-react":"^0.383.0","react":"^18.2.0","react-dom":"^18.2.0","recharts":"^2.12.7"},"devDependencies":{"@vitejs/plugin-react":"^4.3.1","autoprefixer":"^10.4.19","gh-pages":"^6.3.0","postcss":"^8.4.38","tailwindcss":"^3.4.4","vite":"^5.3.1"}}
+{
+  "name": "weather-analytics-platform",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "vite build",
+    "build:frontend": "npm --prefix frontend run build",
+    "preview": "vite preview",
+    "backend": "python backend/run.py",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "data": "python scripts/generate_data.py weatherHistory.csv"
+  },
+  "dependencies": {
+    "lucide-react": "^0.383.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.12.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
+    "gh-pages": "^6.3.0",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "vite": "^5.3.1"
+  }
+}

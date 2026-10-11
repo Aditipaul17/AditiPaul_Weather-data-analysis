@@ -22,8 +22,8 @@ const FEATS=[['Formatted Date','Date/String','Date and time'],['Summary','Catego
 ['Apparent Temperature (C)','Numeric','Feels-like temperature'],['Humidity','Numeric','Humidity'],['Wind Speed (km/h)','Numeric','Wind speed'],['Wind Bearing (degrees)','Numeric','Wind direction'],
 ['Visibility (km)','Numeric','Visibility'],['Loud Cover','Numeric','Cloud/cover value'],['Pressure (millibars)','Numeric','Atmospheric pressure'],['Daily Summary','Text','Daily weather summary']].map(([a,b,c])=>({a,b,c}))
 const STEPS=['CSV Dataset','Data Loading','Schema Inspection','Missing Value Check','Duplicate Removal','Date Processing','Feature Creation','Aggregation','Analysis','Visualization']
-const Overview=({S})=><><Grid c="lg:grid-cols-4"><Kpi icon={Database} label="Dataset" value="weatherHistory.csv"/><Kpi icon={Database} label="Original Records" value="96,453"/>
-  <Kpi icon={Database} label="After Duplicate Removal" value={S.n.toLocaleString()}/><Kpi icon={Database} label="Features" value="12"/></Grid>
+const Overview=({S})=><><Grid c="lg:grid-cols-4"><Kpi icon={Database} label="Dataset" value={S.meta?.dataset_name || "weatherHistory.csv"}/><Kpi icon={Database} label="Original Records" value={(S.meta?.total_raw_records || 96453).toLocaleString()}/>
+  <Kpi icon={Database} label="After Duplicate Removal" value={S.n.toLocaleString()}/><Kpi icon={Database} label="Duplicates Removed" value={(S.meta?.duplicate_records ?? 24).toLocaleString()}/></Grid>
   <Card title="Data Processing" className="mb-4"><div className="flex flex-wrap items-center gap-2">{STEPS.map((s,i)=><span key={s} className="flex items-center gap-2"><span className="px-3 py-1.5 rounded-lg text-sm font-semibold" style={{background:'rgba(6,182,212,.15)',color:'var(--acc)'}}>{s}</span>{i<STEPS.length-1&&<ArrowRight size={16} className="mut"/>}</span>)}</div></Card>
   <Card title="Features"><Tbl file="features" rows={FEATS} cols={[C('a','Feature'),C('b','Type'),C('c','Description')]}/></Card></>
 

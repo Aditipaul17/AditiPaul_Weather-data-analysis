@@ -1,0 +1,26 @@
+{
+  "admin": {
+    "username": "admin",
+    "name": "Admin Analyst",
+    "email": "admin@weatheranalytics.io",
+    "role": "Lead Data Scientist",
+    "password_hash": "fcf4f1fd7798c163d41a37e841bee5599de40e1616085e02ca7c48ace3613bde",
+    "created_at": "2026-01-01T00:00:00"
+  },
+  "demo": {
+    "username": "demo",
+    "name": "Demo Researcher",
+    "email": "demo@weatheranalytics.io",
+    "role": "Meteorologist",
+    "password_hash": "91a3861a30bd1a922f12fbd79d0d7a370e76886b9b77eddabc5696ea6632b762",
+    "created_at": "2026-01-01T00:00:00"
+  },
+  "aditi": {
+    "username": "aditi",
+    "name": "Aditi Paul",
+    "email": "24paula@rbunagpur.in",
+    "role": "Weather Analyst",
+    "password_hash": "004d781b5e6afb1d9b64127579a6814f374e1671805842d322c278a901481b2e",
+    "created_at": "2026-10-11T09:28:17.820814"
+  }
+}
