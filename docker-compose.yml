@@ -1,0 +1,23 @@
+# Local Apache Cassandra for the Weather Analytics backend.
+#   docker compose up -d cassandra
+services:
+  cassandra:
+    image: cassandra:4.1
+    container_name: weather-cassandra
+    ports:
+      - "9042:9042"
+    environment:
+      CASSANDRA_CLUSTER_NAME: WeatherCluster
+      MAX_HEAP_SIZE: 512M
+      HEAP_NEWSIZE: 128M
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh -e 'DESCRIBE KEYSPACES' || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 60s
+
+volumes:
+  cassandra_data:

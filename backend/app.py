@@ -12,11 +12,14 @@ from typing import Optional, Dict, Any, List
 from datetime import datetime
 
 from fastapi import FastAPI, UploadFile, File, HTTPException, Header, Depends
+from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from pydantic import BaseModel
 import pandas as pd
 import numpy as np
+
+import pipeline  # optional PySpark + Cassandra data layer (falls back to pandas below)
 
 # Base paths
 BASE_DIR = Path(__file__).resolve().parent
@@ -448,16 +451,23 @@ async def upload_csv(file: UploadFile = File(...)):
         with open(saved_path, "wb") as f:
             f.write(content)
 
-        # Try utf-8 first, fallback to latin-1
-        try:
-            df = pd.read_csv(io.BytesIO(content), encoding="utf-8")
-        except UnicodeDecodeError:
-            df = pd.read_csv(io.BytesIO(content), encoding="latin-1")
+        # PySpark + Cassandra pipeline. Returns None when it is disabled/unavailable or the
+        # file needs the original behaviour, in which case the pandas code below runs as before.
+        pipeline_result = await run_in_threadpool(pipeline.process_csv_file, saved_path, file.filename)
 
-        if df.empty:
-            raise HTTPException(status_code=400, detail="CSV file contains no rows.")
+        if pipeline_result is not None:
+            payload, meta = pipeline_result
+        else:
+            # Try utf-8 first, fallback to latin-1
+            try:
+                df = pd.read_csv(io.BytesIO(content), encoding="utf-8")
+            except UnicodeDecodeError:
+                df = pd.read_csv(io.BytesIO(content), encoding="latin-1")
 
-        payload, meta = process_weather_dataframe(df, file.filename)
+            if df.empty:
+                raise HTTPException(status_code=400, detail="CSV file contains no rows.")
+
+            payload, meta = process_weather_dataframe(df, file.filename)
 
         # Update in-memory active dataset
         ACTIVE_DATA = payload
@@ -484,8 +494,12 @@ async def load_sample_dataset():
     # Try loading from sample CSV first if exists to do real parsing
     if SAMPLE_CSV_PATH.exists():
         try:
-            df = pd.read_csv(SAMPLE_CSV_PATH)
-            payload, meta = process_weather_dataframe(df, "sample_weather.csv")
+            pipeline_result = await run_in_threadpool(pipeline.process_csv_file, SAMPLE_CSV_PATH, "sample_weather.csv")
+            if pipeline_result is not None:
+                payload, meta = pipeline_result
+            else:
+                df = pd.read_csv(SAMPLE_CSV_PATH)
+                payload, meta = process_weather_dataframe(df, "sample_weather.csv")
             meta["is_sample"] = True
             ACTIVE_DATA = payload
             ACTIVE_META = meta
