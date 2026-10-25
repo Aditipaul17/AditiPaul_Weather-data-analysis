@@ -1,8 +1,8 @@
 name: Deploy Weather Analytics Dashboard to GitHub Pages
 
+# Automated push trigger disabled. Deployments are stopped from running automatically on commit/push.
+# To deploy manually, use GitHub Actions workflow_dispatch.
 on:
-  push:
-    branches: ["main"]
   workflow_dispatch:
 
 permissions:
