@@ -19,7 +19,14 @@ export const DEFAULT_META = {
 }
 
 // Base URLs to try connecting to the backend
-const API_BASES = ['/api', 'http://127.0.0.1:8000/api', 'http://localhost:8000/api']
+const ENV_API = import.meta.env.VITE_API_URL
+const API_BASES = [
+  ...(ENV_API ? [ENV_API.replace(/\/$/, '')] : []),
+  'https://aditipaul-weather-data-analysis-backend.onrender.com/api',
+  '/api',
+  'http://127.0.0.1:8000/api',
+  'http://localhost:8000/api',
+]
 
 async function tryFetch(path, options = {}) {
   const token = localStorage.getItem('wa_auth_token')

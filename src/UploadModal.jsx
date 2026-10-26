@@ -90,7 +90,7 @@ export function UploadModal({ isOpen, onClose, onUpload, onReset, meta, backendO
             <span className="font-semibold text-slate-200">Data Processing Engine:</span>
             {backendOnline ? (
               <span className="text-emerald-400 font-medium flex items-center gap-1">
-                ● FastAPI Backend Active (Port 8000)
+                ● FastAPI Backend Active
               </span>
             ) : (
               <span className="text-amber-400 font-medium flex items-center gap-1">

@@ -44,7 +44,7 @@ app = FastAPI(
 # Enable CORS for local dev servers (Vite on port 5173, preview, etc.)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"], allow_origin_regex=r"https://.*\.onrender\.com",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
